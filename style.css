@@ -87,3 +87,16 @@ body {
 .modal {
   color: black;
 }
+
+.activeWord {
+  background-color: greenyellow;
+  border-radius: 5px;
+}
+
+.correctCharacter {
+  color: mediumblue;
+}
+
+.wrongCharacter {
+  color: mediumvioletred;
+}
