@@ -49,26 +49,21 @@ var eventsModule = (function(dModule, uModule, cModule, wModule){
 
                     //update result : UI Module
                         uModule.updateResults(results);
-                    //update time left
-
-                    //check if have time left
-                        //yes
-
-                        //reduce time by one sec
-
-                        //update time remaining in UI
-
-                        //no
-                        // End the test : Data Module
-
-                        //fill modal
-
-                        //show modal
                         if(dModule.timeLeft()){
                             // reduce time by one second
                             var timeLeft = dModule.reduceTime();
                             //update time remaining in UI
                             uModule.updateTimeLeft(timeLeft);
+                        } else {
+                            // End the test : Data Module
+                            clearInterval(b);
+                            dModule.endTest();
+
+                            dModule.returnData();
+                            //fill modal
+                            uModule.fillModal(results.wpm);
+                            //show modal
+                            uModule.showModal();
                         }
                 },1000);
 
@@ -103,7 +98,16 @@ var eventsModule = (function(dModule, uModule, cModule, wModule){
             }
         });
         //click on download button event listener
+        uModule.getDOMElements().download.addEventListener('click',
+        function(event){
+            if(uModule.isNameEmpty()){
+                uModule.flagNameInput();
+            } else {
 
+                var certificateData = dModule.getCertificateData();
+                cModule.generateCertificate(certificateData);
+            }
+        });
     };
 
     //Scroll into middle view on window resize

@@ -13,11 +13,13 @@ var UIModule = (function(){
         //user input
         textInput: document.querySelector('#input'),
         nameInput: document.querySelector('.form-group'),
+        nameField: document.getElementById('name'),
         //test words
         content:document.getElementById('content'),
         activeWord:'',
         //modal
-        modal: $('#myModal')
+        modal: $('#myModal'),
+        download: document.getElementById('download')
     };
 
     var splitArray = function(string){
@@ -86,7 +88,8 @@ var UIModule = (function(){
 
         getDOMElements: function(){
             return {
-                textInput: DOMElements.textInput
+                textInput: DOMElements.textInput,
+                download : DOMElements.download
             };
         },
 
@@ -111,9 +114,44 @@ var UIModule = (function(){
             updateChange(results.accuracyChange, DOMElements.accuracyChange);
         },
 
-        fillModal: function(){},
+        fillModal: function(wpm){
+            var results;
+            if(wpm < 40){
+                results = {
+                    type : 'turtle',
+                    image : 'turtle.jpg',
+                    level : 'Beginner'
+                };
+            }else if(wpm < 70){
+                results = {
+                    type : 'horse',
+                    image : 'horse.jpg',
+                    level : 'Average'
+                };
+            }else {
+                results = {
+                    type : 'puma',
+                    image : 'puma.jpg',
+                    level : 'Expert'
+                };
+            }
+            var html = '<div class="text-center result"><p>You are a %type%</p><p>You type at a speed of %wpm% words per minute</p><img width="300px" height="200px" src="images/%image%" class="rounded-circle" alt="%alt%"></div>';
 
-        showModal: function(){},
+            html = html.replace('%type%', results.type);
+            html = html.replace('%wpm%', wpm);
+            html = html.replace('%image%', results.image);
+            html = html.replace('%alt%', results.type);
+
+            //insert html before form-group
+            DOMElements.nameInput.insertAdjacentHTML('beforebegin',html);
+
+            //store level in dl button
+            DOMElements.download.setAttribute('level', results.level);
+        },
+
+        showModal: function(){
+            DOMElements.modal.modal('show');
+        },
 
     //user input
 
@@ -121,9 +159,14 @@ var UIModule = (function(){
             DOMElements.textInput.focus();
         },
 
-        isNameEmpty: function(){},
+        isNameEmpty: function(){
+            return DOMElements.nameField = '';
+        },
 
-        flagNameInput: function(){},
+        flagNameInput: function(){
+            DOMElements.nameField.style.borderColor = 'red';
+
+        },
 
         spacePressed: function(event){
             return event.data == " ";
