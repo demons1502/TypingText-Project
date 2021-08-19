@@ -28,8 +28,49 @@ var eventsModule = (function(dModule, uModule, cModule, wModule){
                 return;
             }
             //if the test not starting yet , start the test and countdown
-            if(dModule.testStarted()){
+            if(!dModule.testStarted()){
                 // start the test
+                dModule.startTest();
+                // start count
+
+                var b = setInterval(function(){
+                    // Calculate the result
+                        var results = {};
+                        // update wpm, wpm change
+                        [results.wpm , results.wpmChange] = dModule.calculateWpm();
+                        // update cpm, cpm change
+                        [results.cpm , results.cpmChange] = dModule.calculateCpm();
+
+                        // update accuracy, accuracy change
+                        [results.accuracy , results.accuracyChange] = dModule.calculateAccuracy();
+
+
+                        // dModule.returnData();
+
+                    //update result : UI Module
+                        uModule.updateResults(results);
+                    //update time left
+
+                    //check if have time left
+                        //yes
+
+                        //reduce time by one sec
+
+                        //update time remaining in UI
+
+                        //no
+                        // End the test : Data Module
+
+                        //fill modal
+
+                        //show modal
+                        if(dModule.timeLeft()){
+                            // reduce time by one second
+                            var timeLeft = dModule.reduceTime();
+                            //update time remaining in UI
+                            uModule.updateTimeLeft(timeLeft);
+                        }
+                },1000);
 
             }
 
